@@ -1,0 +1,38 @@
+services:
+  django:
+    build:
+      context: .
+      dockerfile: services/django/Dockerfile
+    container_name: django
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PW=${POSTGRES_PW}
+      - POSTGRES_DB=${POSTGRES_DB}
+    networks:
+      - greece
+    ports:
+      - "8000:8000"
+    restart: always
+  postgres:
+    image: postgres:13.1
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PW}
+      - POSTGRES_DB=${POSTGRES_DB}
+    env_file:
+      - .env
+    networks:
+      - greece
+    ports:
+      - "5432:5432"
+    restart: always
+
+networks:
+  greece:
+    driver: bridge
