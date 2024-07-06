@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: services/django/Dockerfile
     container_name: django
+    volumes:
+      - ./core:/app
     depends_on:
       - postgres
     env_file:
